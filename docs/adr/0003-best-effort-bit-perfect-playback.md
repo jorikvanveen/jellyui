@@ -1,0 +1,7 @@
+# Preserve samples on a best-effort basis through native PipeWire
+
+Jellyui uses native PipeWire output and aims for bit-perfect playback on a best-effort basis. Stream original files from Jellyfin, decode without unnecessary precision loss, submit the source rate and channel layout, and request a matching graph rate. At unity gain, avoid sample-changing processing. Deliberate software volume adjustment changes samples.
+
+Allow PipeWire to convert when shared output requires it so that playback continues. Do not request exclusive access, force graph settings, or disable resampling to enforce sample identity. Exclusive mode is out of scope for the initial version. This policy favors working desktop playback over refusing tracks when exact delivery is unavailable, and does not guarantee identical samples at the device.
+
+Validate Jellyui's submitted samples against decoder output. Any future output diagnostics must distinguish observed conditions from a verified end-to-end sample comparison. See the [PipeWire research](../../issue-tracker/closed/pipewire-research.md) for mechanisms and limitations. Gapless playback is [out of scope](0004-gapless-playback-out-of-scope.md). Use the system default output, with no device selector. Controls should respond without noticeable sluggishness; low latency and buffer tuning are not separate requirements. The output implementation remains open.
