@@ -26,7 +26,7 @@ Open an album to see its artwork, metadata, and tracks in disc and track order. 
 
 Artist names in the album header are individual links to each artist's albums, with hover and keyboard-focus styling. Opening an artist keeps the current playback and queue in place.
 
-Covers and artist portraits persist in `$XDG_CACHE_HOME/jellyui/covers`, or `~/.cache/jellyui/covers` when that variable is unset. The shared disk cache holds up to 1 GB and evicts least-recently-used images. Entries expire 24 hours after fetching so artwork can refresh. Disk cache failures fall back to fetching from Jellyfin. Browser views retain encoded artwork only for visible cards. Decoded pixels and GPU textures belong to visible image elements and are released when clipped out of view or removed, including album headers and old player thumbnails. Switching sections releases the hidden browser's artwork while keeping its metadata and scroll position. Returning to previously viewed artwork loads it from disk instead of a retained image cache. In-flight downloads can finish populating the disk cache, but their results cannot repopulate a hidden view.
+Covers and artist portraits persist in `$XDG_CACHE_HOME/jellyui/covers`, or `~/.cache/jellyui/covers` when that variable is unset. The shared disk cache holds up to 1 GB and evicts least-recently-used images. Entries expire 24 hours after fetching so artwork can refresh. Disk cache failures fall back to fetching from Jellyfin. Browser views retain encoded artwork only for visible cards. Grid artwork is downsampled with Lanczos filtering to the card's physical pixel size, including display scaling. Resizing the window or changing display scale regenerates the raster after 100 ms without further size changes. The original cached PNG stays available for larger views. Decoded pixels and GPU textures belong to visible image elements and are released when clipped out of view or removed, including album headers and old player thumbnails. Switching sections releases the hidden browser's artwork while keeping its metadata and scroll position. Returning to previously viewed artwork loads it from disk instead of a retained image cache. In-flight downloads can finish populating the disk cache, but their results cannot repopulate a hidden view.
 
 Choose Play to replace the queue with an album, or click a track to replace the queue and start there. Queue, beside Play on the album page, appends the album in disc/track order without interrupting playback or changing pause. Playback continues through appended albums. Queueing while idle waits for the player's Play button; if the old queue has finished, Play continues with the newly appended tracks.
 
@@ -60,7 +60,7 @@ Jellyui exports [MPRIS](https://specifications.freedesktop.org/mpris/latest/) on
 
 The MPRIS `DesktopEntry` and window app ID both use `jellyui`, matching the packaged `share/applications/jellyui.desktop` launcher and its X11 startup class. KDE uses this association to put artwork and playback controls in the taskbar's window preview. Install the package through a Nix profile, Home Manager or the system configuration to make its launcher visible to the desktop. Running a binary directly does not register the packaged launcher. For development, a local `~/.local/share/applications/jellyui.desktop` can use `nix develop /absolute/project/path --command /absolute/project/path/target/release/jellyui` as its Exec command. This starts the existing release build with its native libraries, without compiling the app. Remove a development launcher when switching to a normally installed package so it does not shadow the packaged entry.
 
-The interface uses [Catppuccin Mocha](https://catppuccin.com/palette/). Palette values live in `src/theme.rs`; UI code refers to names such as `BASE`, `TEXT`, and `MAUVE`.
+The interface uses [Catppuccin Mocha](https://catppuccin.com/palette/). Palette values live in `src/ui/theme.rs`; UI code refers to names such as `BASE`, `TEXT`, and `MAUVE`.
 
 ## Logging
 
@@ -92,6 +92,7 @@ The text input adapts GPUI's input example. Its Apache license is included under
 
 ## Project notes
 
+- [Architecture and module ownership](docs/architecture.md)
 - [Open work](issue-tracker/open/first-version.md)
 - [Completed research](issue-tracker/closed/pipewire-research.md)
 - [Archived audio experiment](issue-tracker/closed/audio-transition-demo.md)
