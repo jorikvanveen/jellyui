@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Jellyui
+GenericName=Music Player
+Comment=Listen to your Jellyfin music library
+Exec=jellyui
+Icon=audio-x-generic
+Terminal=false
+Categories=AudioVideo;Audio;Music;
+StartupWMClass=jellyui
+StartupNotify=true

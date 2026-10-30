@@ -1,3 +1,5 @@
 # Drop the gapless playback requirement
 
 Gapless playback is out of scope. After listening to the cold-restart and prepared-stream experiments, the user chose to accept brief pauses between tracks rather than require seamless transitions. This supersedes the earlier gapless requirement, including for matching track formats. Native PipeWire output and best-effort sample preservation remain required. Playback should still avoid unintended clicks and clipping.
+
+Updated 2026-10-29: the user approved preparing the next decoder and keeping output connected across automatic transitions with matching sample rates and channel layouts. Source bit depth may differ because decoded samples use f64 output. Audio-worker boundaries drive queue advancement and playback reporting. Rate or layout changes drain and reopen output while retaining the prepared decoder. Source-rate preservation remains the policy; gapless transitions across format changes and network stalls are not guaranteed. This amends the earlier exclusion of matching-format transitions.
